@@ -1,20 +1,33 @@
 #include<bits/stdc++.h>
 using namespace std;
-const int dx[2]= {1,0};
-const int dy[2]= {0,1};
+const int dx[2]={1,0};
+const int dy[2]={0,1};
 int n,t;
 int a[20][20];
-vector<string> ans;
-void xuly(int x,int y,string s)
+string s;
+int f;
+void xuly(int x,int y)
 {
-    if (x>n||y> n) return ;
-    if (a[x][y]==0) return ;
-    if(x==n&& y==n)
+    for(int i=0;i<2;i++)
     {
-        ans.push_back(s);
+        int u=x+dx[i];
+        int v=y+dy[i];
+        if(u<=n&& v<=n)
+        {
+            if(i==1) s=s+"R";
+            else s=s+"D";
+            if(u==n&& v==n &&a[u][v]==1)
+            {
+                cout<<s<<" ";
+                f=1;
+            }
+            else {
+                if(a[u][v]==1)
+                    xuly(u,v);
+            }
+            s.erase(s.size()-1,1);
+        }
     }
-    xuly(x+1,y,s+"D");
-    xuly(x,y+1,s+"R");
 }
 int main()
 {
@@ -22,19 +35,16 @@ int main()
     while(t--)
     {
         cin>>n;
-        ans.clear();
+        s="";
+        f=0;
         for(int i=1; i<=n; i++)
         {
             for(int j=1; j<=n; j++)
                 cin>>a[i][j];
         }
-        xuly(1,1,"");
-        if(ans.size()==0) cout<<"-1"<<endl;
+        if(a[1][1]!=0) xuly(1,1);
+        if(f==0) cout<<"-1"<<endl;
         else
-        {
-            for(auto x:ans)
-                cout<<x<<" ";
             cout<<endl;
-        }
     }
 }
